@@ -1,0 +1,12 @@
+{
+  "buildCommand": "bun install && bun run build --filter=web",
+  "outputDirectory": "apps/web/dist",
+  "installCommand": "bun install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

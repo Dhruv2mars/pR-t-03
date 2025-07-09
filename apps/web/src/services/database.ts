@@ -10,7 +10,14 @@ export class WebDatabaseService {
   async initialize(): Promise<void> {
     try {
       const SQL = await initSqlJs({
-        locateFile: (file) => `https://sql.js.org/dist/${file}`
+        locateFile: (file) => {
+          // For production builds, use the bundled files
+          if (import.meta.env.PROD) {
+            return `https://sql.js.org/dist/${file}`;
+          }
+          // For development, use local node_modules
+          return `/node_modules/sql.js/dist/${file}`;
+        }
       });
 
       const savedData = localStorage.getItem(DB_NAME);

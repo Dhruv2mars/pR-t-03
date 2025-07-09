@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ['sql.js'],
+    exclude: ['@project/editor-core', '@project/db-utils']
   },
   server: {
     fs: {
@@ -15,5 +16,11 @@ export default defineConfig({
     rollupOptions: {
       external: [],
     },
+    commonjsOptions: {
+      include: [/sql\.js/, /node_modules/]
+    }
   },
+  define: {
+    global: 'globalThis',
+  }
 })

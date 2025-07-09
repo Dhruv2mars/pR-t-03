@@ -1,0 +1,25 @@
+{
+  "name": "@project/db-utils",
+  "version": "0.1.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "sql.js": "^1.8.0",
+    "better-sqlite3": "^11.0.0"
+  },
+  "peerDependenciesMeta": {
+    "sql.js": {
+      "optional": true
+    },
+    "better-sqlite3": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "pr-t-03",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean",
+    "type-check": "turbo type-check"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/sql.js": "^1.4.9",
+    "turbo": "^2.0.0",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "bun@1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

@@ -11,6 +11,7 @@ function App() {
     messages,
     isRunning,
     isWaitingForInput,
+    previewContent,
     handleRun,
     handleInput,
     handleClear,
@@ -42,7 +43,7 @@ function App() {
       />
       
       <Preview
-        content={code}
+        content={previewContent}
         language={language}
       />
     </Layout>

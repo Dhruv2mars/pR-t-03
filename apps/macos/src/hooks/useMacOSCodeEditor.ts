@@ -12,6 +12,7 @@ export function useMacOSCodeEditor() {
   const [pendingInput, setPendingInput] = useState<string>('');
   const [showRuntimeModal, setShowRuntimeModal] = useState(false);
   const [missingRuntime, setMissingRuntime] = useState<'python' | 'node' | null>(null);
+  const [previewContent, setPreviewContent] = useState<string>('');
   
   const debouncedCode = useDebounce(code, 500);
   
@@ -121,6 +122,10 @@ export function useMacOSCodeEditor() {
       
       if (result.stdout) {
         addMessage('output', result.stdout);
+        // For HTML, set the preview content to the executed result
+        if (language === 'html') {
+          setPreviewContent(result.stdout);
+        }
       }
       
       if (result.stderr) {
@@ -164,6 +169,10 @@ export function useMacOSCodeEditor() {
       
       if (result.stdout) {
         addMessage('output', result.stdout);
+        // For HTML, set the preview content to the executed result
+        if (language === 'html') {
+          setPreviewContent(result.stdout);
+        }
       }
       
       if (result.stderr) {
@@ -178,11 +187,13 @@ export function useMacOSCodeEditor() {
 
   const handleClear = useCallback(() => {
     setMessages([]);
+    setPreviewContent(''); // Clear preview when clearing console
   }, []);
 
   const handleLanguageChange = useCallback((newLanguage: Language) => {
     setLanguage(newLanguage);
     setMessages([]);
+    setPreviewContent(''); // Clear preview when changing language
   }, []);
 
   const handleCloseRuntimeModal = useCallback(() => {
@@ -199,6 +210,7 @@ export function useMacOSCodeEditor() {
     isWaitingForInput,
     showRuntimeModal,
     missingRuntime,
+    previewContent: language === 'html' ? previewContent : code,
     handleRun,
     handleInput,
     handleClear,

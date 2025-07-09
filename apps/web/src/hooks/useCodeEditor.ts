@@ -11,6 +11,7 @@ export function useCodeEditor() {
   const [isRunning, setIsRunning] = useState(false);
   const [isWaitingForInput, setIsWaitingForInput] = useState(false);
   const [pendingInput, setPendingInput] = useState<string>('');
+  const [previewContent, setPreviewContent] = useState<string>('');
   
   const debouncedCode = useDebounce(code, 500);
   
@@ -109,6 +110,10 @@ export function useCodeEditor() {
       
       if (result.stdout) {
         addMessage('output', result.stdout);
+        // For HTML, set the preview content to the executed result
+        if (language === 'html') {
+          setPreviewContent(result.stdout);
+        }
       }
       
       if (result.stderr) {
@@ -157,6 +162,10 @@ export function useCodeEditor() {
       
       if (result.stdout) {
         addMessage('output', result.stdout);
+        // For HTML, set the preview content to the executed result
+        if (language === 'html') {
+          setPreviewContent(result.stdout);
+        }
       }
       
       if (result.stderr) {
@@ -171,11 +180,13 @@ export function useCodeEditor() {
 
   const handleClear = useCallback(() => {
     setMessages([]);
+    setPreviewContent(''); // Clear preview when clearing console
   }, []);
 
   const handleLanguageChange = useCallback((newLanguage: Language) => {
     setLanguage(newLanguage);
     setMessages([]);
+    setPreviewContent(''); // Clear preview when changing language
   }, []);
 
   return {
@@ -185,6 +196,7 @@ export function useCodeEditor() {
     messages,
     isRunning,
     isWaitingForInput,
+    previewContent: language === 'html' ? previewContent : code,
     handleRun,
     handleInput,
     handleClear,

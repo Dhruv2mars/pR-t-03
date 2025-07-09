@@ -16,6 +16,7 @@ function App() {
     isWaitingForInput,
     showRuntimeModal,
     missingRuntime,
+    previewContent,
     handleRun,
     handleInput,
     handleClear,
@@ -49,7 +50,7 @@ function App() {
         />
         
         <MacOSPreview
-          content={code}
+          content={previewContent}
           language={language}
         />
       </Layout>

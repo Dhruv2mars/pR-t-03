@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Language, ConsoleMessage, useDebounce } from '@project/editor-core';
+import { Language, ConsoleMessage, useDebounce } from '../shared';
 import { Judge0Service } from '../services/judge0';
 import { FallbackExecutorService } from '../services/fallback-executor';
 import { WebDatabaseService } from '../services/database';
@@ -11,6 +11,7 @@ export function useCodeEditor() {
   const [isRunning, setIsRunning] = useState(false);
   const [isWaitingForInput, setIsWaitingForInput] = useState(false);
   const [pendingInput, setPendingInput] = useState<string>('');
+
   
   const debouncedCode = useDebounce(code, 500);
   
@@ -95,6 +96,12 @@ export function useCodeEditor() {
     setMessages([]);
     
     try {
+      // For HTML, just show a simple "Preview refreshed" message and return
+      if (language === 'html') {
+        addMessage('output', 'Preview refreshed');
+        return;
+      }
+
       if (language === 'python' && code.includes('input(')) {
         setIsWaitingForInput(true);
         return;
@@ -102,8 +109,8 @@ export function useCodeEditor() {
 
       let result = await judge0Service.executeCode(code, language, pendingInput);
       
-      // If Judge0 fails, try fallback for JavaScript and HTML
-      if (result.status === 'error' && (language === 'javascript' || language === 'html')) {
+      // If Judge0 fails, try fallback for JavaScript
+      if (result.status === 'error' && language === 'javascript') {
         result = await fallbackService.executeCode(code, language, pendingInput);
       }
       

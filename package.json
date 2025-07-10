@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:packages": "cd packages/db-utils && npm run build && cd ../editor-core && npm run build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "clean": "turbo clean",

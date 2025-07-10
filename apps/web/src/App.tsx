@@ -1,5 +1,5 @@
 
-import { Editor, Console, Preview, Buttons } from '@project/editor-core';
+import { Editor, Console, Preview, Buttons } from './shared';
 import { Layout } from './components/Layout';
 import { useCodeEditor } from './hooks/useCodeEditor';
 

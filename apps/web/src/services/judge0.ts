@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ExecutionResult, Language } from '@project/editor-core';
+import { ExecutionResult, Language } from '../shared';
 
 const JUDGE0_API_URL = 'https://judge0-ce.p.rapidapi.com';
 const RAPIDAPI_KEY = import.meta.env.VITE_RAPIDAPI_KEY || 'demo-key';

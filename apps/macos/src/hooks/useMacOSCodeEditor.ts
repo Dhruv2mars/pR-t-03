@@ -12,6 +12,7 @@ export function useMacOSCodeEditor() {
   const [pendingInput, setPendingInput] = useState<string>('');
   const [showRuntimeModal, setShowRuntimeModal] = useState(false);
   const [missingRuntime, setMissingRuntime] = useState<'python' | 'node' | null>(null);
+
   
   const debouncedCode = useDebounce(code, 500);
   
@@ -105,13 +106,19 @@ export function useMacOSCodeEditor() {
   const handleRun = useCallback(async () => {
     if (isRunning) return;
 
-    const runtimeAvailable = await checkRuntimeAvailability(language);
-    if (!runtimeAvailable) return;
-
     setIsRunning(true);
     setMessages([]);
     
     try {
+      // For HTML, just show a simple "Preview refreshed" message and return
+      if (language === 'html') {
+        addMessage('output', 'Preview refreshed');
+        return;
+      }
+
+      const runtimeAvailable = await checkRuntimeAvailability(language);
+      if (!runtimeAvailable) return;
+
       if (language === 'python' && code.includes('input(')) {
         setIsWaitingForInput(true);
         return;

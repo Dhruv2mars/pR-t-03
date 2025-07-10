@@ -11,12 +11,26 @@ export const MacOSPreview: React.FC<PreviewProps> = ({
   useEffect(() => {
     if (language === 'html' && iframeRef.current) {
       const iframe = iframeRef.current;
-      const doc = iframe.contentDocument || iframe.contentWindow?.document;
       
-      if (doc) {
-        doc.open();
-        doc.write(content);
-        doc.close();
+      try {
+        // Create a blob URL for secure content loading
+        const blob = new Blob([content || ''], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        
+        // Set the iframe source
+        iframe.src = url;
+        
+        // Clean up the blob URL after iframe loads
+        const cleanup = () => URL.revokeObjectURL(url);
+        iframe.addEventListener('load', cleanup, { once: true });
+        
+        // Fallback cleanup after 2 seconds
+        setTimeout(cleanup, 2000);
+        
+      } catch (error) {
+        console.error('Error creating HTML preview:', error);
+        // Fallback: clear iframe if there's an error
+        iframe.src = 'about:blank';
       }
     }
   }, [content, language]);
@@ -42,7 +56,7 @@ export const MacOSPreview: React.FC<PreviewProps> = ({
         <iframe
           ref={iframeRef}
           className="w-full h-full border-0 bg-white"
-          sandbox="allow-scripts allow-same-origin"
+          sandbox="allow-scripts"
           title="HTML Preview"
         />
       </div>
